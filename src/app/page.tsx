@@ -1,388 +1,435 @@
-// app/page.tsx
-'use client';
+"use client";
 
-import { useAuth } from "@/context/AuthContext";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
+
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 import {
-  Building,
-  User,
   ArrowRight,
-  ShieldAlert,
-  Zap,
-  Users,
-  MapPin,
+  ShieldCheck,
+  MapPinned,
+  Sparkles,
+  Activity,
+  BellRing,
+  ScanSearch,
+  ChevronRight,
   Star,
+  Building2,
+  Users,
+  BrainCircuit,
 } from "lucide-react";
-import { useEffect, useState } from "react";
 
-import { useTheme } from "@/context/ThemeContext";
-
-function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
-
-  return (
-    <button
-      onClick={toggleTheme}
-      aria-label="Toggle Dark Mode"
-      className="text-2xl"
-      title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-    >
-      {theme === "dark" ? "🌙" : "☀️"}
-    </button>
-  );
-}
+import { Button } from "@/components/ui/button";
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <header className="sticky top-0 z-50 w-full border-b border-border/10 bg-background/60 backdrop-blur-xl">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+    <main className="relative min-h-screen overflow-hidden bg-[#f8fafc] text-slate-900 dark:bg-[#020617] dark:text-white">
+      {/* BACKGROUND */}
+      <div className="fixed inset-0 -z-30 overflow-hidden">
+        {/* GRID */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(120,120,120,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(120,120,120,0.04)_1px,transparent_1px)] bg-[size:52px_52px]" />
+
+        {/* GLOWS */}
+        <div className="absolute left-0 top-0 h-[600px] w-[600px] rounded-full bg-blue-500/10 blur-3xl" />
+
+        <div className="absolute bottom-0 right-0 h-[600px] w-[600px] rounded-full bg-violet-500/10 blur-3xl" />
+
+        <div className="absolute left-1/3 top-1/3 h-[500px] w-[500px] rounded-full bg-cyan-500/5 blur-3xl" />
+      </div>
+
+      {/* NAVBAR */}
+      <header className="sticky top-0 z-50 border-b border-black/5 bg-white/70 backdrop-blur-2xl dark:border-white/10 dark:bg-[#020617]/70">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-6">
+          {/* LOGO */}
           <Link
             href="/"
-            className="flex items-center gap-2 text-2xl font-bold text-primary mr-6 hover:opacity-90 transition"
+            className="flex items-center gap-3"
           >
-            <ShieldAlert className="h-7 w-7 text-primary" />
-            <span>FixIt</span>
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-violet-500 text-white shadow-lg">
+              <ShieldCheck className="h-5 w-5" />
+            </div>
+
+            <div>
+              <div className="text-xl font-black tracking-tight">
+                FixIt
+              </div>
+
+              <div className="text-[11px] text-muted-foreground">
+                Civic Intelligence Platform
+              </div>
+            </div>
           </Link>
-          <nav className="hidden md:flex items-center space-x-4 text-sm font-medium">
-            <Link href="/features" className="hover:text-primary transition">
+
+          {/* NAV */}
+          <nav className="hidden items-center gap-8 md:flex">
+            <Link
+              href="#features"
+              className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
+            >
               Features
             </Link>
+
             <Link
-              href="/how-it-works"
-              className="hover:text-primary transition"
+              href="#how"
+              className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
             >
               How It Works
             </Link>
-            <Link href="/get-started" className="hover:text-primary transition">
-              Get Started
+
+            <Link
+              href="#stats"
+              className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
+            >
+              Analytics
             </Link>
           </nav>
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/login/citizen">Citizen Login</Link>
+
+          {/* CTA */}
+          <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              className="rounded-xl"
+              asChild
+            >
+              <Link href="/login/citizen">
+                Citizen Login
+              </Link>
             </Button>
-            <Button variant="default" size="sm" asChild>
-              <Link href="/login/admin">Admin Login</Link>
+
+            <Button
+              className="rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 shadow-lg shadow-blue-500/20"
+              asChild
+            >
+              <Link href="/login/admin">
+                Admin Portal
+              </Link>
             </Button>
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative flex-grow flex flex-col items-center justify-center text-center px-6 py-32 overflow-hidden">
-        <Image
-          src="https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1500&q=80"
-          alt="Hero background"
-          fill
-          className="absolute inset-0 -z-10 object-cover brightness-[0.3]"
-        />
-        {/* Animated overlay */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-transparent to-black/40 pointer-events-none" />
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="mb-4"
-        >
-          <span className="inline-block bg-primary/20 text-primary px-4 py-1 rounded-full font-semibold tracking-wide shadow-lg animate-pulse">
-            Empowering Communities, One Report at a Time
-          </span>
-        </motion.div>
-        <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 flex items-center justify-center gap-4"
-        >
-          <Image
-            src="/swachbharat.png"
-            alt="Swachh Bharat"
-            width={80}
-            height={40}
-            className="inline-block"
-          />
-          Swachh Bharat, <span className="text-primary">Swachh Future</span>
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 1 }}
-          className="max-w-2xl mx-auto text-lg md:text-2xl text-muted-foreground mb-10"
-        >
-          FixIt connects citizens and authorities for a cleaner, safer, and more
-          vibrant neighborhood. Report, track, and resolve civic issues with
-          ease.
-        </motion.p>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="flex flex-col sm:flex-row gap-4"
-        >
-          <Button
-            size="lg"
-            asChild
-            className="bg-primary hover:shadow-xl hover:-translate-y-1 transition"
+      {/* HERO */}
+      <section className="relative">
+        <div className="mx-auto grid min-h-[92vh] max-w-7xl items-center gap-14 px-4 py-24 md:grid-cols-2 md:px-6">
+          {/* LEFT */}
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: 30,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{
+              duration: 0.6,
+            }}
           >
-            <Link href="/citizen/dashboard/report">
-              Report an Issue <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
-          <Button
-            size="lg"
-            variant="secondary"
-            asChild
-            className="hover:shadow-xl hover:-translate-y-1 transition"
+            {/* BADGE */}
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-5 py-2 text-sm font-semibold text-blue-600 dark:text-blue-400">
+              <Sparkles className="h-4 w-4" />
+              AI-Powered Governance Infrastructure
+            </div>
+
+            {/* HEADING */}
+            <h1 className="max-w-2xl text-5xl font-black leading-[1.05] tracking-tight md:text-7xl">
+              Smarter Cities.
+              <br />
+              <span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-violet-500 bg-clip-text text-transparent">
+                Faster Civic Action.
+              </span>
+            </h1>
+
+            {/* TEXT */}
+            <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl">
+              FixIt transforms civic issue reporting into
+              intelligent governance workflows using AI,
+              geospatial intelligence, and real-time
+              analytics.
+            </p>
+
+            {/* BUTTONS */}
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+              <Button
+                size="lg"
+                className="h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-500 px-8 text-base shadow-xl shadow-blue-500/20 transition hover:scale-[1.02]"
+                asChild
+              >
+                <Link href="/citizen/dashboard/report">
+                  Report an Issue
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+
+              <Button
+                variant="outline"
+                size="lg"
+                className="h-14 rounded-2xl px-8 text-base"
+                asChild
+              >
+                <Link href="#features">
+                  Explore Features
+                </Link>
+              </Button>
+            </div>
+
+            {/* STATS */}
+            <div className="mt-14 grid grid-cols-3 gap-5">
+              {[
+                ["12K+", "Issues Resolved"],
+                ["98%", "AI Accuracy"],
+                ["24/7", "Monitoring"],
+              ].map(([value, label]) => (
+                <div
+                  key={label}
+                  className="rounded-2xl border border-black/5 bg-white/70 p-5 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.03]"
+                >
+                  <div className="text-2xl font-black">
+                    {value}
+                  </div>
+
+                  <div className="mt-1 text-sm text-muted-foreground">
+                    {label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* RIGHT DASHBOARD MOCKUP */}
+          <motion.div
+            initial={{
+              opacity: 0,
+              scale: 0.92,
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+            }}
+            transition={{
+              duration: 0.7,
+            }}
+            className="relative"
           >
-            <Link href="#how-it-works">Learn More</Link>
-          </Button>
-        </motion.div>
-      </section>
+            {/* GLOW */}
+            <div className="absolute inset-0 rounded-[40px] bg-blue-500/10 blur-3xl" />
 
-      {/* Trusted By Section */}
-      <section className="py-10 bg-gradient-to-r from-muted/80 to-background/80 border-y border-border">
-        <div className="container mx-auto px-6 text-center">
-          <h3 className="text-lg font-semibold text-muted-foreground mb-4">
-            Trusted by communities & organizations
-          </h3>
-          <div className="flex flex-wrap justify-center items-center gap-8 opacity-80">
-            <Image
-              src="/swachbharat.png"
-              alt="Swachh Bharat"
-              width={80}
-              height={40}
-            />
-            <Image src="/govt.png" alt="Govt" width={60} height={40} />
-            <Image src="/unicef.png" alt="UNICEF" width={80} height={40} />
-            <Image
-              src="/worldbnk.png"
-              alt="World Bank"
-              width={80}
-              height={40}
-            />
-          </div>
+            {/* PANEL */}
+            <div className="relative overflow-hidden rounded-[36px] border border-black/5 bg-white/70 p-6 shadow-[0_10px_80px_rgba(0,0,0,0.08)] backdrop-blur-2xl dark:border-white/10 dark:bg-white/[0.03]">
+              {/* TOP */}
+              <div className="mb-6 flex items-center justify-between">
+                <div>
+                  <div className="text-lg font-bold">
+                    Governance Dashboard
+                  </div>
+
+                  <div className="text-sm text-muted-foreground">
+                    Real-time civic intelligence
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1">
+                  <div className="h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
+
+                  <span className="text-xs font-semibold text-emerald-600">
+                    Live
+                  </span>
+                </div>
+              </div>
+
+              {/* MOCK CARDS */}
+              <div className="space-y-4">
+                {[
+                  {
+                    icon: MapPinned,
+                    title:
+                      "Pothole Cluster Detected",
+                    subtitle:
+                      "14 reports near school zone",
+                  },
+
+                  {
+                    icon: BellRing,
+                    title:
+                      "High Severity Alert",
+                    subtitle:
+                      "Waterlogging in Sector 12",
+                  },
+
+                  {
+                    icon: BrainCircuit,
+                    title:
+                      "AI Priority Analysis",
+                    subtitle:
+                      "Immediate intervention suggested",
+                  },
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="flex items-start gap-4 rounded-2xl border border-black/5 bg-white/60 p-4 dark:border-white/10 dark:bg-white/[0.03]"
+                  >
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-500/10 text-blue-600">
+                      <item.icon className="h-5 w-5" />
+                    </div>
+
+                    <div className="flex-1">
+                      <div className="font-semibold">
+                        {item.title}
+                      </div>
+
+                      <div className="mt-1 text-sm text-muted-foreground">
+                        {item.subtitle}
+                      </div>
+                    </div>
+
+                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                ))}
+              </div>
+
+              {/* ANALYTICS */}
+              <div className="mt-6 grid grid-cols-2 gap-4">
+                <div className="rounded-2xl border border-black/5 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 p-5 dark:border-white/10">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Activity className="h-4 w-4" />
+                    Resolution Rate
+                  </div>
+
+                  <div className="mt-2 text-3xl font-black">
+                    94%
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-black/5 bg-gradient-to-br from-violet-500/10 to-pink-500/10 p-5 dark:border-white/10">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <ScanSearch className="h-4 w-4" />
+                    AI Detection
+                  </div>
+
+                  <div className="mt-2 text-3xl font-black">
+                    Active
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-24 bg-muted/50">
-        <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold text-center mb-16">
-            Why Use FixIt?
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <FeatureCard
-              icon={<Zap className="h-10 w-10" />}
-              title="Fast & Easy Reporting"
-              description="Snap a photo, pinpoint the location, and submit in seconds. No paperwork, no hassle."
-              imageUrl="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80"
-            />
-            <FeatureCard
-              icon={<Users className="h-10 w-10" />}
-              title="Transparent Tracking"
-              description="Follow your report’s journey from 'Pending' to 'Resolved' with real-time updates and notifications."
-              imageUrl="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
-            />
-            <FeatureCard
-              icon={<MapPin className="h-10 w-10" />}
-              title="Community Impact"
-              description="See the difference you make. Every report helps build a cleaner, safer, and more connected neighborhood."
-              imageUrl="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonial Section */}
-      <section className="py-20 bg-gradient-to-r from-primary/10 to-accent/10 border-y border-border">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold mb-10">What Citizens Say</h2>
-          <div className="flex flex-col md:flex-row gap-8 justify-center">
-            <TestimonialCard
-              name="Amit Sharma"
-              role="Resident, Delhi"
-              text="Reporting potholes and garbage dumps is now so easy! Our street was cleaned within days. Highly recommended."
-            />
-            <TestimonialCard
-              name="Priya Verma"
-              role="Community Volunteer"
-              text="FixIt brings people together. I love tracking progress and seeing real change in my area."
-            />
-            <TestimonialCard
-              name="Ravi Kumar"
-              role="Municipal Officer"
-              text="The admin dashboard helps us prioritize and resolve issues faster. It’s a win-win for everyone."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Steps Section */}
-      <section id="how-it-works" className="py-24 bg-card">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold mb-16">How It Works</h2>
-          <div className="flex flex-col md:flex-row justify-center gap-12">
-            <StepCard
-              number="1"
-              title="Report"
-              description="Describe the issue, add photos & location."
-            />
-            <StepCard
-              number="2"
-              title="Review"
-              description="Admins verify and assign resolution."
-            />
-            <StepCard
-              number="3"
-              title="Resolve"
-              description="Departments fix & update status."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Get Started Section */}
+      {/* FEATURES */}
       <section
-        id="get-started"
-        className="py-24 bg-primary text-primary-foreground text-center"
+        id="features"
+        className="py-24"
       >
-        <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold mb-6">
-            Ready to Make a Difference?
-          </h2>
-          <p className="max-w-xl mx-auto mb-10 text-lg">
-            Join your neighbors and take the first step towards a cleaner
-            tomorrow. Every report counts!
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button
-              size="lg"
-              variant="secondary"
-              asChild
-              className="bg-white text-primary hover:scale-105 transition"
-            >
-              <Link href="/login/citizen">
-                <User className="mr-2" /> Citizen Login
-              </Link>
-            </Button>
-            <Button
-              size="lg"
-              variant="secondary"
-              asChild
-              className="bg-white text-primary hover:scale-105 transition"
-            >
-              <Link href="/login/admin">
-                <Building className="mr-2" /> Admin Login
-              </Link>
-            </Button>
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <div className="mb-16 text-center">
+            <div className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-blue-600">
+              Platform Capabilities
+            </div>
+
+            <h2 className="text-4xl font-black tracking-tight md:text-5xl">
+              Built for Modern Urban Governance
+            </h2>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-3">
+            {[
+              {
+                icon: Sparkles,
+                title:
+                  "AI Classification",
+                text:
+                  "Automatically detects issue categories, severity levels, and urgency using multimodal intelligence.",
+              },
+
+              {
+                icon: MapPinned,
+                title:
+                  "Geospatial Intelligence",
+                text:
+                  "Interactive heatmaps, clustering, and location-aware civic analytics for smarter interventions.",
+              },
+
+              {
+                icon: Users,
+                title:
+                  "Citizen Collaboration",
+                text:
+                  "Community-driven reporting, upvoting, and transparent issue tracking workflows.",
+              },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="group rounded-[32px] border border-black/5 bg-white/70 p-8 shadow-lg backdrop-blur-2xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl dark:border-white/10 dark:bg-white/[0.03]"
+              >
+                <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-3xl bg-gradient-to-br from-blue-500/10 to-violet-500/10">
+                  <item.icon className="h-7 w-7 text-blue-600" />
+                </div>
+
+                <h3 className="text-2xl font-bold">
+                  {item.title}
+                </h3>
+
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  {item.text}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-10 bg-muted/80 border-t border-border mt-auto">
-        <div className="container mx-auto px-6 text-center text-muted-foreground text-sm">
-          &copy; {new Date().getFullYear()} FixIt. All rights reserved.
-          <div className="mt-2 space-x-6">
-            <Link href="#" className="hover:text-primary transition">
-              Privacy
-            </Link>
-            <Link href="#" className="hover:text-primary transition">
-              Terms
-            </Link>
-            <Link
-              href="mailto:contact@fixit.com"
-              className="hover:text-primary transition"
-            >
-              Contact Us
-            </Link>
+      {/* CTA */}
+      <section className="pb-24 pt-10">
+        <div className="mx-auto max-w-5xl px-4 md:px-6">
+          <div className="relative overflow-hidden rounded-[40px] border border-black/5 bg-gradient-to-br from-blue-600 to-violet-600 p-14 text-white shadow-[0_10px_80px_rgba(59,130,246,0.35)]">
+            <div className="absolute right-0 top-0 h-[300px] w-[300px] rounded-full bg-white/10 blur-3xl" />
+
+            <div className="relative z-10 text-center">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2 text-sm font-semibold">
+                <Building2 className="h-4 w-4" />
+                Smart Governance Infrastructure
+              </div>
+
+              <h2 className="text-4xl font-black tracking-tight md:text-5xl">
+                Build Cleaner,
+                <br />
+                Smarter Cities.
+              </h2>
+
+              <p className="mx-auto mt-6 max-w-2xl text-lg text-blue-100">
+                Empower citizens and authorities with
+                AI-driven civic intelligence and real-time
+                governance analytics.
+              </p>
+
+              <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+                <Button
+                  size="lg"
+                  className="h-14 rounded-2xl bg-white px-8 text-base text-blue-600 hover:bg-blue-50"
+                  asChild
+                >
+                  <Link href="/login/citizen">
+                    Citizen Portal
+                  </Link>
+                </Button>
+
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="h-14 rounded-2xl border-white/20 bg-white/10 px-8 text-base text-white hover:bg-white/20"
+                  asChild
+                >
+                  <Link href="/login/admin">
+                    Admin Dashboard
+                  </Link>
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
-      </footer>
-    </div>
-  );
-}
-
-// FeatureCard
-function FeatureCard({
-  icon,
-  title,
-  description,
-  imageUrl,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  imageUrl: string;
-}) {
-  return (
-    <motion.div
-      whileHover={{ scale: 1.05, boxShadow: "0 8px 32px 0 rgba(0,0,0,0.25)" }}
-      className="bg-card rounded-2xl shadow-lg overflow-hidden border border-primary/30 transition-all"
-    >
-      <div className="relative w-full h-40">
-        <Image src={imageUrl} alt={title} fill className="object-cover" />
-      </div>
-      <div className="p-6 text-center">
-        <div className="mb-3 p-3 rounded-full bg-primary/10 text-primary inline-flex shadow">
-          {icon}
-        </div>
-        <h3 className="text-xl font-semibold mb-2">{title}</h3>
-        <p className="text-muted-foreground">{description}</p>
-      </div>
-    </motion.div>
-  );
-}
-
-// StepCard
-function StepCard({
-  number,
-  title,
-  description,
-}: {
-  number: string;
-  title: string;
-  description: string;
-}) {
-  return (
-    <motion.div
-      whileHover={{ y: -5, boxShadow: "0 4px 24px 0 rgba(0,0,0,0.15)" }}
-      className="bg-card p-6 rounded-xl shadow-md border border-primary/20 max-w-xs mx-auto transition-all"
-    >
-      <div className="w-14 h-14 mb-4 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xl font-bold mx-auto shadow">
-        {number}
-      </div>
-      <h3 className="text-lg font-semibold mb-2">{title}</h3>
-      <p className="text-muted-foreground">{description}</p>
-    </motion.div>
-  );
-}
-
-// TestimonialCard
-function TestimonialCard({
-  name,
-  role,
-  text,
-}: {
-  name: string;
-  role: string;
-  text: string;
-}) {
-  return (
-    <div className="bg-card rounded-2xl p-8 shadow-lg max-w-sm mx-auto border border-border flex flex-col items-center">
-      <Star className="text-yellow-400 mb-2" />
-      <p className="text-muted-foreground italic mb-4">"{text}"</p>
-      <div className="flex flex-col items-center">
-        <span className="font-semibold text-primary">{name}</span>
-        <span className="text-xs text-muted-foreground">{role}</span>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
